@@ -1,1 +1,246 @@
-1111111111111111
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+		<title>轮播图</title>
+		<!-- <script src="jquery.js"></script> -->
+		<style>
+			*{
+				margin: 0px;
+				padding:0px;
+				list-style: none;
+				text-decoration: none;
+			}
+			
+			/*根据图片的大小来设置外层div的大小*/
+			#flash{ 
+				width: 1020px;
+				height: 580px;
+				margin: 0 auto;
+				position: relative; /*设置div定位，方便之后图片及圆点位置的设定*/
+				border:1px solid black;
+				margin-top: 100px;
+			}
+			
+			#flash img{
+				width: 100%;
+				height: 100%;
+				position: absolute; /*设置所有图片重叠*/
+				left: 0px;
+				top: 0px;
+				display: none; /*设置所有图片隐藏，通过改变第一个图片的行间样式来使第一个图片显示*/
+			}
+			
+			#flash ul{
+				width: 150px;
+				height: 25px;
+				border-radius: 20px;
+				background-color:rgba(255,255,255,0.5);
+				position: absolute;
+				left: 45%;
+				bottom: 10%;
+			}
+			
+			#flash ul li{
+				width: 12px;
+				height: 12px;
+				margin-top:5px;
+				background-color: #fff;
+				border-radius: 50%;
+				margin-left: 15px;
+				float: left;
+			}
+			
+			/*设置第一个圆点背景色为红色*/
+			#flash ul .li_1{
+				background-color: #f40; 
+			}
+			
+			#flash .span-r{
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				position: absolute;
+				right: 2%;
+				top: 45%;
+				background-color: rgba(255,255,255,0.5);
+			}
+			
+			#flash .span-r span{
+				width: 100%;
+				height:100%;
+				color:rgba(0,0,0,0.5);
+				font-size: xx-large;
+				font-weight: 700;
+				line-height: 50px;
+				margin-left: 15px;
+				cursor: pointer;
+			}
+			
+			#flash .span-l{
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				position: absolute;
+				left: 2%;
+				top: 45%;
+				background-color: rgba(255,255,255,0.5);
+			}
+			
+			#flash .span-l span{
+				width: 100%;
+				height:100%;
+				color:rgba(0,0,0,0.5);
+				font-size: xx-large;
+				font-weight: 700;
+				line-height: 50px;
+				margin-left: 15px;
+				cursor: pointer;
+			}
+			
+			#le,#ri{
+				width: 35px;
+				height: 70px;
+				position: absolute;
+				background:rgba(0,0,0,0.5) url(arrow-left.png) no-repeat center;
+				border-radius: 3px;
+				top: 235px;
+			}
+			
+			#le{
+				left: 5px;
+			}
+			
+			#ri{
+				right: 5px;
+				background-image: url(arrow-right.png);
+			}
+			
+			#le:hover,#ri:hover{
+				background-color: rgba(0,0,0,0.65);
+			}
+		</style>
+    </head>
+	<body>
+		<div id="flash">
+			<img src="1.jpg" alt="" style="display: block">
+			<img src="2.jpg" alt="">
+			<img src="3.jpg" alt="">
+			<img src="4.jpg" alt="">
+			<img src="5.jpg" alt="">
+			<ul id="ul">
+				<li class="li_1"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<div id="right">
+				<a href="#" id="ri"></a>
+				<!-- <span></span> -->
+			</div>
+			<div id="left">
+				<a href="#" id="le"></a>
+				<!-- <span></span> -->
+			</div>
+		</div>
+		<script>
+			//查找指定ID的元素（返回该div的所有内容包括该div）
+			var div = document.getElementById('flash');
+			//选中div下所有的图片（返回一个img集合）
+			var img = div.getElementsByTagName('img'); 
+			//var ul = document.getElementsByTagName('ul')[ 0];
+			//查找指定ID的元素（返回该ul的所有内容包括该ul）
+			var ul = document.getElementById('ul');
+			//选中ul下所有的li
+			var li = ul.getElementsByTagName('li');
+			//查找指定ID的元素
+			var div_r = document.getElementById('right');
+			// var span_r = div_r.getElementsByTagName('span');
+			//查找指定ID的元素
+			var div_l = document.getElementById('left');
+			// var sapn_l = div_l.getElementsByTagName('span');
+			//声明变量len 获取img的length
+			var len = img.length;
+			//声明count来显示当前图片的序号
+			var count = 0; 
+			
+			//将定时器里的函数提取到外部
+			//向右轮播
+			function run(){ 
+				count++;
+				//当图片加载到最后一张时，使其归零
+				count = count==5?0:count; 
+			    //利用for循环使除当前count位其他图片隐藏
+				for(var i=0;i<len;i++){ 
+					img[i].style.display = 'none'; 
+				}
+				//显示当前count的值所代表的图片
+				img[count].style.display = 'block';
+				//利用for循环使除当前count位其他li的背景颜色都是白色
+				for(var i=0;i<li.length;i++){
+					li[i].style.backgroundColor = "#fff"; 
+				}
+				//当前count的li的背景颜色为#f40
+				li[count].style.backgroundColor = "#f40";
+			}
+			
+			//定义周期定时器，使图片每隔1s更换一次
+			var timer = setInterval(run,1000); 
+			//鼠标指针移动到指定的元素上时发生
+			div.onmouseover = function(){
+			   clearInterval(timer);
+			}
+			
+			//定义鼠标移出事件，当鼠标移出div区域，轮播继续
+			div.onmouseleave = function(){ 
+			   timer = setInterval(run,1000);
+			}
+			
+			for(var i=0;i<len;i++){
+				//定义index记录当前鼠标在li的位置
+				li[i].index = i; 
+				//定义鼠标经过事件
+				li[i].onmouseenter = function(){
+				//通过for循环将所有图片隐藏，圆点背景设为白色
+				for(var i=0;i<len;i++){ 
+					li[i].style.background = '#fff';
+					img[i].style.display = 'none';
+				}
+				//设置当前所指圆点的背景色
+				this.style.background = '#f40'; 
+				//使圆点对应的图片显示
+				img[this.index].style.display = 'block'; 
+				}
+			}
+			
+			//点击右边的时候执行函数向右轮播
+			div_r.onclick = function(){
+				run(); 
+			}
+			
+			//向左轮播
+			function reverse(){
+				count--;
+				count = count==-1?4:count;
+				//利用for循环使除当前count位其他图片隐藏
+				for(var i=0;i<len;i++){
+					img[i].style.display = 'none'; 
+				}
+				//显示当前count的值所代表的图片
+				img[count].style.display = 'block'; 
+				for(var i=0;i<li.length;i++){
+					li[i].style.backgroundColor = "#fff";
+				}
+				li[count].style.backgroundColor = "#f40";
+			}
+			
+			//点击左边的时候执行函数向左轮播
+			div_l.onclick = function(){
+			   reverse();
+			}
+		</script>
+    </body>		
+</html>
